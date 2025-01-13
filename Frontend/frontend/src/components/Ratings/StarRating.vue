@@ -1,5 +1,5 @@
 <template>
-  <div class="star-rating" v-if="showStars">
+  <div class="star-rating">
     <button
       v-for="star in 5"
       :key="star"
@@ -23,10 +23,6 @@ export default defineComponent({
       type: Number,
       required: true,
     },
-    showStars: {
-      type: Boolean,
-      default: false,
-    },
   },
   emits: ['update:modelValue'],
 })
@@ -34,7 +30,7 @@ export default defineComponent({
 
 <style scoped>
 .star-rating {
-  display: flex;
+  display: inline-flex;
   gap: 0.25rem;
 }
 
@@ -43,16 +39,24 @@ export default defineComponent({
   border: none;
   cursor: pointer;
   font-size: 1.5rem;
-  padding: 0;
-  color: var(--color-text-light-2);
-  transition: color 0.2s ease;
+  padding: 0.25rem;
+  color: var(--color-text-light-2, #9ca3af);
+  transition: all 0.2s ease;
 }
 
 .star-button.active {
   color: #ffc107;
+  transform: scale(1.1);
 }
 
 .star-button:hover {
   color: #ffc107;
+  transform: scale(1.1);
+}
+
+.star-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+  border-radius: 4px;
 }
 </style>

@@ -8,12 +8,26 @@
         class="rating-card"
       >
         <span class="dimension-name">{{ rating.dimension_name }}</span>
-        <RatingBar
-          :score="rating.weighted_score || 0"
-          :dimension-id="rating.dimension_id"
-          :user-score="userRatings[rating.dimension_id]"
-          @submit-rating="handleRatingSubmit"
-        />
+        <div class="rating-input-container">
+          <div class="star-rating-container">
+            <StarRating
+              :model-value="pendingRatings[rating.dimension_id] || userRatings[rating.dimension_id] || 0"
+              show-stars
+              @update:model-value="score => handleRatingSubmit({ dimensionId: rating.dimension_id, score })"
+            />
+            <span class="rating-score">{{ pendingRatings[rating.dimension_id] || userRatings[rating.dimension_id] || 0 }}/5</span>
+          </div>
+          <button 
+            class="submit-rating-btn" 
+            @click="submitDimensionRating(rating.dimension_id)"
+            :disabled="!pendingRatings[rating.dimension_id]"
+          >
+            Submit Rating
+          </button>
+        </div>
+        <div class="average-rating">
+          Average: {{ rating.weighted_score?.toFixed(1) || 'No ratings yet' }}
+        </div>
       </div>
     </div>
     <p v-if="message" :class="{ 'success-message': success, 'error-message': !success }">
@@ -23,9 +37,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, watch } from 'vue'
+import { defineComponent, ref, onMounted, watch, reactive } from 'vue'
 import api from '../../services/api'
-import RatingBar from './RatingBar.vue'
+import StarRating from './StarRating.vue'
 
 interface RatingData {
   dimension_id: number
@@ -40,7 +54,7 @@ interface AggregatedRating extends RatingData {
 
 export default defineComponent({
   name: 'RatingsSection',
-  components: { RatingBar },
+  components: { StarRating },
   props: {
     courseId: { type: Number, required: true },
     instructorId: { type: Number, default: null },
@@ -48,6 +62,7 @@ export default defineComponent({
   setup(props) {
     const aggregatedRatings = ref<AggregatedRating[]>([])
     const userRatings = ref<Record<number, number>>({})
+    const pendingRatings = reactive<Record<number, number>>({})
     const loadingAggregates = ref(false)
     const message = ref('')
     const success = ref(true)
@@ -60,7 +75,7 @@ export default defineComponent({
         const response = await api.get(endpoint)
         const ratings = response.data.ratings || []
         userRatings.value = ratings.reduce((acc: Record<number, number>, rating: RatingData) => {
-          acc[rating.dimension_id] = rating.score || 0
+          acc[rating.dimension_id] = rating.user_score || 0
           return acc
         }, {})
       } catch (error) {
@@ -68,28 +83,34 @@ export default defineComponent({
       }
     }
 
-    const handleRatingSubmit = async (rating: { dimensionId: number; score: number }) => {
+    const handleRatingSubmit = (rating: { dimensionId: number; score: number }) => {
+      pendingRatings[rating.dimensionId] = rating.score
+    }
+
+    const submitDimensionRating = async (dimensionId: number) => {
       try {
+        const score = pendingRatings[dimensionId]
         const payload = props.instructorId
           ? {
               course_instructor_id: props.instructorId,
               ratings: [{
-                rating_dimension_id: rating.dimensionId,
-                score: rating.score,
+                rating_dimension_id: dimensionId,
+                score: score,
               }],
             }
           : {
               course_id: props.courseId,
               ratings: [{
-                rating_dimension_id: rating.dimensionId,
-                score: rating.score,
+                rating_dimension_id: dimensionId,
+                score: score,
               }],
             }
 
         await api.post('/ratings', payload)
         message.value = 'Rating submitted successfully'
         success.value = true
-        userRatings.value[rating.dimensionId] = rating.score
+        userRatings.value[dimensionId] = score
+        delete pendingRatings[dimensionId]
         fetchAggregatedRatings()
       } catch (error: any) {
         message.value = error.response?.data?.message || 'Failed to submit rating'
@@ -99,21 +120,11 @@ export default defineComponent({
 
     const calculateWeightedScores = async () => {
       if (props.instructorId) {
-        const response = await api.get<{ ratings: RatingData[] }>(
-          `/ratings/courses/${props.courseId}/instructors/${props.instructorId}`
-        )
-        return response.data.ratings.map((rating) => ({
-          ...rating,
-          weighted_score: rating.average_score,
-        }))
+        const response = await api.get<{ ratings: RatingData[] }>(`/ratings/courses/${props.courseId}/instructors/${props.instructorId}`)
+        return response.data.ratings.map((rating) => ({ ...rating, weighted_score: rating.average_score }))
       } else {
-        const response = await api.get<{ ratings: RatingData[] }>(
-          `/ratings/courses/${props.courseId}`
-        )
-        return response.data.ratings.map((rating) => ({
-          ...rating,
-          weighted_score: rating.average_score,
-        }))
+        const response = await api.get<{ ratings: RatingData[] }>(`/ratings/courses/${props.courseId}`)
+        return response.data.ratings.map((rating) => ({ ...rating, weighted_score: rating.average_score }))
       }
     }
 
@@ -121,12 +132,14 @@ export default defineComponent({
       loadingAggregates.value = true
       message.value = ''
       try {
-        aggregatedRatings.value = await calculateWeightedScores()
-
-        // Initialize scores with default values
-        aggregatedRatings.value.forEach((rating) => {
-          scores[rating.dimension_id] = 5
-        })
+        console.log('Fetching aggregated ratings...')
+        const ratings = await calculateWeightedScores()
+        console.log('Received ratings:', ratings)
+        aggregatedRatings.value = ratings
+        if (ratings.length === 0) {
+          message.value = 'No rating dimensions available.'
+          success.value = false
+        }
       } catch (error) {
         console.error('Failed to fetch ratings:', error)
         message.value = 'Failed to load ratings. Please try again later.'
@@ -150,8 +163,10 @@ export default defineComponent({
     return {
       aggregatedRatings,
       userRatings,
+      pendingRatings,
       loadingAggregates,
       handleRatingSubmit,
+      submitDimensionRating,
       message,
       success,
     }
@@ -163,59 +178,96 @@ export default defineComponent({
 .ratings-section {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
+  padding: 1rem;
 }
 
 .ratings-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
 }
 
 .rating-card {
-  background: var(--color-background);
-  padding: 1rem;
+  background: var(--color-background-soft, #ffffff);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.rating-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.star-rating-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.rating-score {
+  font-size: 1rem;
+  color: var(--color-text, #374151);
+}
+
+.submit-rating-btn {
+  padding: 0.75rem 1rem;
+  background-color: var(--color-primary, #3b82f6);
+  color: white;
+  border: none;
   border-radius: 6px;
-  border: 1px solid var(--color-border);
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  width: 100%;
+}
+
+.submit-rating-btn:hover:not(:disabled) {
+  background-color: var(--color-primary-dark, #2563eb);
+}
+
+.submit-rating-btn:disabled {
+  background-color: var(--color-text-light-2, #9ca3af);
+  cursor: not-allowed;
 }
 
 .dimension-name {
   display: block;
   margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: var(--color-heading);
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--color-heading, #111827);
+}
+
+.average-rating {
+  margin-top: 1rem;
+  color: var(--color-text-light-1, #6b7280);
+  font-size: 0.9rem;
 }
 
 .success-message {
-  color: #28a745;
+  color: #059669;
   text-align: center;
+  padding: 0.75rem;
+  background-color: #d1fae5;
+  border-radius: 6px;
 }
 
 .error-message {
-  color: #dc3545;
+  color: #dc2626;
   text-align: center;
+  padding: 0.75rem;
+  background-color: #fee2e2;
+  border-radius: 6px;
 }
 
-.progress-bar {
-  position: relative;
-  height: 20px;
-  background: #e0e0e0;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.progress-fill {
-  height: 100%;
-  background: #4caf50;
-  transition: width 0.3s ease;
-}
-
-.average-score {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.9rem;
-  color: #fff;
+.loading {
+  text-align: center;
+  color: var(--color-text-light-1, #6b7280);
+  padding: 2rem;
 }
 </style>

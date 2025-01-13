@@ -107,10 +107,13 @@ export default defineComponent({
     const fetchCourseDetails = async () => {
       loading.value = true
       try {
+        console.log('Fetching course details for ID:', courseId)
         const response = await api.get<CourseDetails>(`/courses/${courseId}`)
         course.value = response.data
+        console.log('Course details:', course.value)
       } catch (error) {
         console.error('Failed to fetch course details:', error)
+        course.value = null
       } finally {
         loading.value = false
       }
