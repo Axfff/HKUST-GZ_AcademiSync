@@ -3,10 +3,7 @@ import { useAuthStore } from '../store/auth'
 import router from '../router'
 
 const api = axios.create({
-  baseURL:
-    process.env.NODE_ENV === 'production'
-      ? 'https://courseComment.hkust-gz.Axfff.com/v1/api'
-      : 'http://localhost:3000/v1/api',
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },

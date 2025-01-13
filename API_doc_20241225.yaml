@@ -1,0 +1,828 @@
+openapi: 3.0.3
+info:
+  title: AcademiSync API
+  description: >
+    API documentation for AcademiSync—the University Course Rating System allowing students to rate and review courses and instructors.
+  version: 0.0.0
+servers:
+  - url: https://courseComment.hkust-gz.Axfff.com/v1/api
+    description: Production server
+  - url: http://localhost:3000/v1/api
+    description: Development server
+tags:
+  - name: Authentication
+    description: User registration, login, and email verification
+  - name: Users
+    description: User profile management
+  - name: Courses
+    description: Course management and retrieval
+  - name: Instructors
+    description: Instructor management and retrieval
+  - name: Ratings
+    description: Course and instructor ratings
+  - name: Comments
+    description: Commenting system for courses and instructors
+  - name: Likes
+    description: Like and unlike comments
+  - name: Follows
+    description: Follow and unfollow courses
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        email:
+          type: string
+          format: email
+          example: student@university.edu
+        name:
+          type: string
+          example: John Doe
+        created_at:
+          type: string
+          format: date-time
+          example: "2024-04-27T14:48:00.000Z"
+
+    RegisterRequest:
+      type: object
+      required:
+        - email
+        - password
+        - name
+      properties:
+        email:
+          type: string
+          format: email
+          example: student@university.edu
+        password_hash:
+          type: string
+          format: password
+          example: hihdf8q083y8gfvh40q34gv
+        name:
+          type: string
+          example: John Doe
+
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          example: student@university.edu
+        password_hash:
+          type: string
+          format: password
+          example: hihdf8q083y8gfvh40q34gv
+
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        user:
+          $ref: '#/components/schemas/User'
+
+    Course:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 101
+        course_code:
+          type: string
+          example: CS101
+        title:
+          type: string
+          example: Introduction to Computer Science
+        unit:
+          type: integer
+          example: 3
+        description:
+          type: string
+          example: "An introductory course on computer science concepts."
+        created_at:
+          type: string
+          format: date-time
+          example: "2024-04-27T14:48:00.000Z"
+
+    Instructor:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 10
+        name:
+          type: string
+          example: Dr. Jane Smith
+        department:
+          type: string
+          example: Computer Science
+        email:
+          type: string
+          format: email
+          example: jane.smith@university.edu
+        created_at:
+          type: string
+          format: date-time
+          example: "2024-04-27T14:48:00.000Z"
+
+    RatingDimension:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Usefulness"
+        description:
+          type: string
+          example: "How useful the course content is."
+        created_at:
+          type: string
+          format: date-time
+          example: "2024-04-27T14:48:00.000Z"
+
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 3001
+        user_id:
+          type: integer
+          example: 1
+        course_id:
+          type: integer
+          nullable: true
+          example: 101
+        course_instructor_id:
+          type: integer
+          nullable: true
+          example: 1001
+        parent_comment_id:
+          type: integer
+          nullable: true
+          example: null
+        content:
+          type: string
+          example: "Great course! I learned a lot."
+        created_at:
+          type: string
+          format: date-time
+          example: "2024-04-27T16:00:00.000Z"
+
+    RatingRequest:
+      type: object
+      required:
+        - course_id
+        - ratings
+      properties:
+        course_id:
+          type: integer
+          nullable: true
+          example: 101
+        course_instructor_id:
+          type: integer
+          nullable: true
+          example: 1001
+        ratings:
+          type: array
+          items:
+            $ref: '#/components/schemas/RatingInput'
+
+    RatingInput:
+      type: object
+      required:
+        - rating_dimension_id
+        - score
+      properties:
+        rating_dimension_id:
+          type: integer
+          example: 1
+        score:
+          type: integer
+          minimum: 1
+          maximum: 5
+          example: 4
+
+    CommentRequest:
+      type: object
+      required:
+        - content
+      properties:
+        course_id:
+          type: integer
+          nullable: true
+          example: 101
+        course_instructor_id:
+          type: integer
+          nullable: true
+          example: 1001
+        parent_comment_id:
+          type: integer
+          nullable: true
+          example: null
+        content:
+          type: string
+          example: "Great course! I learned a lot."
+          
+          
+  responses:
+    UnauthorizedError:
+      description: Unauthorized access
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Unauthorized"
+
+    NotFoundError:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Resource not found"
+
+    ValidationError:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Invalid input"
+
+paths:
+  /auth/register:
+    post:
+      tags:
+        - Authentication
+      summary: Register a new user using a school email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '200':
+          description: Registration successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Registration successful."
+        '400':
+          $ref: '#/components/responses/ValidationError'
+
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: Authenticate a user and issue a JWT token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /users/me:
+    get:
+      tags:
+        - Users
+      summary: Get the authenticated user's profile
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: User profile retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /courses:
+    get:
+      tags:
+        - Courses
+      summary: Retrieve a list of all courses
+      responses:
+        '200':
+          description: A list of courses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+
+  /courses/{course_id}:
+    get:
+      tags:
+        - Courses
+      summary: Retrieve detailed information about a specific course, including its instructors
+      parameters:
+        - in: path
+          name: course_id
+          required: true
+          schema:
+            type: integer
+          description: ID of the course to retrieve
+      responses:
+        '200':
+          description: Course details retrieved successfully, including instructors
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Course'
+                  - type: object
+                    properties:
+                      instructors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            course_instructor_id:
+                              type: integer
+                              description: The unique identifier of the course-instructor relationship
+                            id:
+                              type: integer
+                              description: The ID of the instructor
+                            name:
+                              type: string
+                              description: The name of the instructor
+                            profile_url:
+                              type: string
+                              description: The URL of the instructor's profile
+                            created_at:
+                              type: string
+                              format: date-time
+                              description: Timestamp of when the instructor profile was created
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+
+  /courses/search:
+    get:
+      tags:
+        - Courses
+      summary: Search for courses by keyword
+      parameters:
+        - in: query
+          name: q
+          required: false
+          schema:
+            type: string
+          description: The keyword to search for in the course name, code, or description
+      responses:
+        '200':
+          description: A list of courses matching the search query (can be empty if no courses match)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+        '400':
+          description: Missing search query or invalid query parameter
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "No search query provided"
+
+  /instructors/{instructor_id}:
+    get:
+      tags:
+        - Instructors
+      summary: Retrieve detailed information about a specific instructor
+      parameters:
+        - in: path
+          name: instructor_id
+          required: true
+          schema:
+            type: integer
+          description: ID of the instructor to retrieve
+      responses:
+        '200':
+          description: Instructor details retrieved
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Instructor'
+                  - type: object
+                    properties:
+                      courses:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Course'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /rating-dimensions:
+    get:
+      tags:
+        - Ratings
+      summary: Retrieve all rating dimensions
+      responses:
+        '200':
+          description: A list of rating dimensions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RatingDimension'
+
+  /ratings:
+    post:
+      tags:
+        - Ratings
+      summary: Submit a rating for a course or course-instructor pair
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RatingRequest'
+      responses:
+        '201':
+          description: Ratings submitted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Ratings submitted successfully."
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /ratings/courses/{course_id}:
+    get:
+      tags:
+        - Ratings
+      summary: Get aggregated ratings for a course
+      parameters:
+        - in: path
+          name: course_id
+          required: true
+          schema:
+            type: integer
+          description: ID of the course
+      responses:
+        '200':
+          description: Aggregated ratings for the course
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  course_id:
+                    type: integer
+                    example: 101
+                  ratings:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        dimension_id:
+                          type: integer
+                          example: 1
+                        dimension_name:
+                          type: string
+                          example: "Usefulness"
+                        average_score:
+                          type: number
+                          format: float
+                          example: 4.2
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /ratings/courses/{course_id}/instructors/{instructor_id}:
+    get:
+      tags:
+        - Ratings
+      summary: Get aggregated ratings for a course-instructor pair
+      parameters:
+        - in: path
+          name: course_id
+          required: true
+          schema:
+            type: integer
+          description: ID of the course
+        - in: path
+          name: instructor_id
+          required: true
+          schema:
+            type: integer
+          description: ID of the instructor
+      responses:
+        '200':
+          description: Aggregated ratings for the course-instructor pair
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  course_instructor_id:
+                    type: integer
+                    example: 1001
+                  ratings:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        dimension_id:
+                          type: integer
+                          example: 1
+                        dimension_name:
+                          type: string
+                          example: "Usefulness"
+                        average_score:
+                          type: number
+                          format: float
+                          example: 4.5
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /comments:
+    post:
+      tags:
+        - Comments
+      summary: Post a comment on a course or course-instructor pair
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentRequest'
+      responses:
+        '201':
+          description: Comment posted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /comments/courses/{course_id}:
+    get:
+      tags:
+        - Comments
+      summary: Retrieve comments for a course
+      parameters:
+        - in: path
+          name: course_id
+          required: true
+          schema:
+            type: integer
+          description: ID of the course
+      responses:
+        '200':
+          description: List of comments with sub-comments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /comments/courses/{course_id}/instructors/{instructor_id}:
+    get:
+      tags:
+        - Comments
+      summary: Retrieve comments for a course-instructor pair
+      parameters:
+        - in: path
+          name: course_id
+          required: true
+          schema:
+            type: integer
+          description: ID of the course
+        - in: path
+          name: instructor_id
+          required: true
+          schema:
+            type: integer
+          description: ID of the instructor
+      responses:
+        '200':
+          description: List of comments with sub-comments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /likes/comments/{comment_id}:
+    post:
+      tags:
+        - Likes
+      summary: Like a comment
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: comment_id
+          required: true
+          schema:
+            type: integer
+          description: ID of the comment to like
+      responses:
+        '200':
+          description: Like added successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  like_count:
+                    type: integer
+                    example: 10
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+    delete:
+      tags:
+        - Likes
+      summary: Unlike a comment
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: comment_id
+          required: true
+          schema:
+            type: integer
+          description: ID of the comment to unlike
+      responses:
+        '200':
+          description: Like removed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  like_count:
+                    type: integer
+                    example: 9
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /follows/courses/{course_id}:
+    post:
+      tags:
+        - Follows
+      summary: Follow a course
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: course_id
+          required: true
+          schema:
+            type: integer
+          description: ID of the course to follow
+      responses:
+        '200':
+          description: Course followed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Course followed successfully."
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+    delete:
+      tags:
+        - Follows
+      summary: Unfollow a course
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: course_id
+          required: true
+          schema:
+            type: integer
+          description: ID of the course to unfollow
+      responses:
+        '200':
+          description: Course unfollowed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Course unfollowed successfully."
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /users/me/followed-courses:
+    get:
+      tags:
+        - Follows
+      summary: Retrieve the list of courses the user is following
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of followed courses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+
+
+security:
+  - BearerAuth: []
+
