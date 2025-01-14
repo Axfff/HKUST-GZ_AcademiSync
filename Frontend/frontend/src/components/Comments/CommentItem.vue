@@ -10,6 +10,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue';
+import type { PropType } from 'vue';
 import api from '../../services/api';
 
 interface Comment {

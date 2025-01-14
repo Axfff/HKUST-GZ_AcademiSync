@@ -5,9 +5,21 @@
       <div
         v-for="rating in aggregatedRatings"
         :key="rating.dimension_id"
-        class="rating-card"
+        class="rating-item"
       >
-        <span class="dimension-name">{{ rating.dimension_name }}</span>
+        <div class="rating-header">
+          <h3 class="dimension-name">{{ rating.dimension_name }}</h3>
+          <div class="average-rating">
+            Average:
+            {{
+              rating.average_score !== null
+                ? (typeof rating.average_score === 'string' 
+                    ? parseFloat(rating.average_score).toFixed(1) 
+                    : rating.average_score.toFixed(1))
+                : "No ratings yet"
+            }}
+          </div>
+        </div>
         <div class="rating-input-container">
           <div class="star-rating-container">
             <StarRating
@@ -41,14 +53,6 @@
             Submit Rating
           </button>
         </div>
-        <div class="average-rating">
-          Average:
-          {{
-            rating.average_score
-              ? parseFloat(rating.average_score).toFixed(1)
-              : "No ratings yet"
-          }}
-        </div>
       </div>
     </div>
     <p
@@ -68,12 +72,18 @@ import StarRating from "./StarRating.vue";
 interface RatingData {
   dimension_id: number;
   dimension_name: string;
-  average_score: number | null;
-  user_score?: number;
+  average_score: string | number | null;
+  score?: number | null;
+}
+
+interface MyRatingData {
+  dimension_id: number;
+  dimension_name: string;
+  score: number | null;
 }
 
 interface AggregatedRating extends RatingData {
-  average_score: number | null;
+  average_score: string | number | null;
 }
 
 export default defineComponent({
@@ -81,7 +91,7 @@ export default defineComponent({
   components: { StarRating },
   props: {
     courseId: { type: Number, required: true },
-    instructorId: { type: Number, default: null },
+    instructorId: { type: Number, required: false },
   },
   setup(props) {
     const aggregatedRatings = ref<AggregatedRating[]>([]);
@@ -95,14 +105,14 @@ export default defineComponent({
     const fetchUserRatings = async () => {
       try {
         const endpoint = courseInstructorId.value
-          ? `/ratings/my-ratings?course_instructor_id=${courseInstructorId.value}`
+          ? `/ratings/my-ratings?course_instructor_id=${courseInstructorId.value.toString()}`
           : `/ratings/my-ratings?course_id=${props.courseId}`;
         console.log("Fetching user ratings with endpoint:", endpoint);
-        const response = await api.get(endpoint);
+        const response = await api.get<{ ratings: MyRatingData[] }>(endpoint);
         console.log("Received user ratings:", response.data);
         const ratings = response.data.ratings || [];
         userRatings.value = ratings.reduce(
-          (acc: Record<number, number>, rating: RatingData) => {
+          (acc: Record<number, number>, rating: MyRatingData) => {
             acc[rating.dimension_id] = rating.score || 0;
             return acc;
           },
@@ -261,98 +271,111 @@ export default defineComponent({
 
 <style scoped>
 .ratings-section {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
   padding: 1rem;
 }
 
 .ratings-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
 }
 
-.rating-card {
-  background: var(--color-background-soft, #ffffff);
-  padding: 1.5rem;
-  border-radius: 8px;
-  border: 1px solid var(--color-border, #e5e7eb);
+.rating-item {
+  background-color: #f8f9fa;
+  border-radius: 0.5rem;
+  padding: 1rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  min-width: 0;
+}
+
+.rating-header {
+  margin-bottom: 0.75rem;
+}
+
+.dimension-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.average-rating {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
 }
 
 .rating-input-container {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  margin-top: 1rem;
+  gap: 0.75rem;
 }
 
 .star-rating-container {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 
 .rating-score {
-  font-size: 1rem;
-  color: var(--color-text, #374151);
+  font-size: 0.9rem;
+  color: #666;
 }
 
 .submit-rating-btn {
-  padding: 0.75rem 1rem;
-  background-color: var(--color-primary, #3b82f6);
+  padding: 0.4rem 0.75rem;
+  background-color: #4CAF50;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 0.25rem;
   cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
   width: 100%;
 }
 
 .submit-rating-btn:hover:not(:disabled) {
-  background-color: var(--color-primary-dark, #2563eb);
+  background-color: #45a049;
 }
 
 .submit-rating-btn:disabled {
-  background-color: var(--color-text-light-2, #9ca3af);
+  background-color: #cccccc;
   cursor: not-allowed;
 }
 
-.dimension-name {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-  font-size: 1.1rem;
-  color: var(--color-heading, #111827);
-}
-
-.average-rating {
-  margin-top: 1rem;
-  color: var(--color-text-light-1, #6b7280);
-  font-size: 0.9rem;
-}
-
 .success-message {
-  color: #059669;
-  text-align: center;
-  padding: 0.75rem;
-  background-color: #d1fae5;
-  border-radius: 6px;
+  color: #4CAF50;
+  margin-top: 1rem;
 }
 
 .error-message {
-  color: #dc2626;
-  text-align: center;
-  padding: 0.75rem;
-  background-color: #fee2e2;
-  border-radius: 6px;
+  color: #f44336;
+  margin-top: 1rem;
 }
 
 .loading {
-  text-align: center;
-  color: var(--color-text-light-1, #6b7280);
-  padding: 2rem;
+  color: #666;
+  font-style: italic;
+}
+
+@media (max-width: 1200px) {
+  .ratings-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .ratings-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .ratings-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
