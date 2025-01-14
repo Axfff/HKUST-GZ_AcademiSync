@@ -170,4 +170,3 @@ def get_my_ratings():
         'ratings': ratings_data
     }
     return jsonify(response), 200
-

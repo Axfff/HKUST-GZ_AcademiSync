@@ -11,14 +11,30 @@
         <div class="rating-input-container">
           <div class="star-rating-container">
             <StarRating
-              :model-value="pendingRatings[rating.dimension_id] || userRatings[rating.dimension_id] || 0"
+              :model-value="
+                pendingRatings[rating.dimension_id] ||
+                userRatings[rating.dimension_id] ||
+                0
+              "
               show-stars
-              @update:model-value="score => handleRatingSubmit({ dimensionId: rating.dimension_id, score })"
+              @update:model-value="
+                (score) =>
+                  handleRatingSubmit({
+                    dimensionId: rating.dimension_id,
+                    score,
+                  })
+              "
             />
-            <span class="rating-score">{{ pendingRatings[rating.dimension_id] || userRatings[rating.dimension_id] || 0 }}/5</span>
+            <span class="rating-score"
+              >{{
+                pendingRatings[rating.dimension_id] ||
+                userRatings[rating.dimension_id] ||
+                0
+              }}/5</span
+            >
           </div>
-          <button 
-            class="submit-rating-btn" 
+          <button
+            class="submit-rating-btn"
             @click="submitDimensionRating(rating.dimension_id)"
             :disabled="!pendingRatings[rating.dimension_id]"
           >
@@ -26,162 +42,208 @@
           </button>
         </div>
         <div class="average-rating">
-          Average: {{ typeof rating.weighted_score === 'number' ? rating.weighted_score.toFixed(1) : 'No ratings yet' }}
+          Average:
+          {{
+            rating.average_score
+              ? parseFloat(rating.average_score).toFixed(1)
+              : "No ratings yet"
+          }}
         </div>
       </div>
     </div>
-    <p v-if="message" :class="{ 'success-message': success, 'error-message': !success }">
+    <p
+      v-if="message"
+      :class="{ 'success-message': success, 'error-message': !success }"
+    >
       {{ message }}
     </p>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, watch, reactive } from 'vue'
-import api from '../../services/api'
-import StarRating from './StarRating.vue'
+import { defineComponent, ref, onMounted, watch, reactive } from "vue";
+import api from "../../services/api";
+import StarRating from "./StarRating.vue";
 
 interface RatingData {
-  dimension_id: number
-  dimension_name: string
-  average_score: number | null
-  user_score?: number
+  dimension_id: number;
+  dimension_name: string;
+  average_score: number | null;
+  user_score?: number;
 }
 
 interface AggregatedRating extends RatingData {
-  weighted_score: number | null
+  average_score: number | null;
 }
 
 export default defineComponent({
-  name: 'RatingsSection',
+  name: "RatingsSection",
   components: { StarRating },
   props: {
     courseId: { type: Number, required: true },
     instructorId: { type: Number, default: null },
   },
   setup(props) {
-    const aggregatedRatings = ref<AggregatedRating[]>([])
-    const userRatings = ref<Record<number, number>>({})
-    const pendingRatings = reactive<Record<number, number>>({})
-    const loadingAggregates = ref(false)
-    const message = ref('')
-    const success = ref(true)
+    const aggregatedRatings = ref<AggregatedRating[]>([]);
+    const userRatings = ref<Record<number, number>>({});
+    const pendingRatings = reactive<Record<number, number>>({});
+    const loadingAggregates = ref(false);
+    const message = ref("");
+    const success = ref(true);
+    const courseInstructorId = ref<number | null>(null);
 
     const fetchUserRatings = async () => {
       try {
-        const endpoint = props.instructorId
-          ? `/ratings/my-ratings?course_instructor_id=${props.instructorId}`
-          : `/ratings/my-ratings?course_id=${props.courseId}`
-        const response = await api.get(endpoint)
-        const ratings = response.data.ratings || []
-        userRatings.value = ratings.reduce((acc: Record<number, number>, rating: RatingData) => {
-          acc[rating.dimension_id] = rating.user_score || 0
-          return acc
-        }, {})
+        const endpoint = courseInstructorId.value
+          ? `/ratings/my-ratings?course_instructor_id=${courseInstructorId.value}`
+          : `/ratings/my-ratings?course_id=${props.courseId}`;
+        console.log("Fetching user ratings with endpoint:", endpoint);
+        const response = await api.get(endpoint);
+        console.log("Received user ratings:", response.data);
+        const ratings = response.data.ratings || [];
+        userRatings.value = ratings.reduce(
+          (acc: Record<number, number>, rating: RatingData) => {
+            acc[rating.dimension_id] = rating.score || 0;
+            return acc;
+          },
+          {}
+        );
+        console.log("Processed user ratings:", userRatings.value);
       } catch (error) {
-        console.error('Failed to fetch user ratings:', error)
+        console.error("Failed to fetch user ratings:", error);
       }
-    }
+    };
 
-    const handleRatingSubmit = (rating: { dimensionId: number; score: number }) => {
-      pendingRatings[rating.dimensionId] = rating.score
-    }
+    const handleRatingSubmit = (rating: {
+      dimensionId: number;
+      score: number;
+    }) => {
+      pendingRatings[rating.dimensionId] = rating.score;
+    };
 
     const submitDimensionRating = async (dimensionId: number) => {
       try {
-        const score = pendingRatings[dimensionId]
-        console.log('Submitting rating with payload:', {
+        const score = pendingRatings[dimensionId];
+        console.log("Submitting rating with payload:", {
           dimensionId,
           score,
           courseId: props.courseId,
-          instructorId: props.instructorId
-        })
-        const payload = props.instructorId
+          courseInstructorId: courseInstructorId.value,
+        });
+        const payload = courseInstructorId.value
           ? {
-              course_instructor_id: props.instructorId,
-              ratings: [{
-                rating_dimension_id: dimensionId,
-                score: score,
-              }],
+              course_instructor_id: courseInstructorId.value,
+              ratings: [
+                {
+                  rating_dimension_id: dimensionId,
+                  score: score,
+                },
+              ],
             }
           : {
               course_id: props.courseId,
-              ratings: [{
-                rating_dimension_id: dimensionId,
-                score: score,
-              }],
-            }
+              ratings: [
+                {
+                  rating_dimension_id: dimensionId,
+                  score: score,
+                },
+              ],
+            };
 
-        console.log('Making API request with payload:', payload)
-        const response = await api.post('/ratings', payload)
-        console.log('Rating submission response:', response)
-        message.value = 'Rating submitted successfully'
-        success.value = true
-        userRatings.value[dimensionId] = score
-        delete pendingRatings[dimensionId]
-        await fetchAggregatedRatings()
-        console.log('Updated aggregated ratings:', aggregatedRatings.value)
+        console.log("Making API request with payload:", payload);
+        const response = await api.post("/ratings", payload);
+        console.log("Rating submission response:", response);
+        message.value = "Rating submitted successfully";
+        success.value = true;
+        userRatings.value[dimensionId] = score;
+        delete pendingRatings[dimensionId];
+        await fetchAggregatedRatings();
+        console.log("Updated aggregated ratings:", aggregatedRatings.value);
       } catch (error: any) {
-        console.error('Failed to submit rating:', error)
-        message.value = error.response?.data?.message || 'Failed to submit rating'
-        success.value = false
+        console.error("Failed to submit rating:", error);
+        message.value =
+          error.response?.data?.message || "Failed to submit rating";
+        success.value = false;
       }
-    }
+    };
 
     const calculateWeightedScores = async () => {
       try {
         if (props.instructorId) {
-          const response = await api.get<{ ratings: RatingData[] }>(`/ratings/courses/${props.courseId}/instructors/${props.instructorId}`)
-          console.log('Received instructor ratings:', response.data)
-          return response.data.ratings.map((rating) => ({ 
-            ...rating, 
-            weighted_score: typeof rating.average_score === 'number' ? rating.average_score : null 
-          }))
+          const response = await api.get<{ ratings: RatingData[]; course_instructor_id: number }>(
+            `/ratings/courses/${props.courseId}/instructors/${props.instructorId}`
+          );
+          console.log("Received instructor ratings:", response.data);
+          courseInstructorId.value = response.data.course_instructor_id;
+          return response.data.ratings.map((rating) => ({
+            ...rating,
+            dimension_id: rating.dimension_id,
+            dimension_name: rating.dimension_name,
+            average_score:
+              rating.average_score !== null
+                ? typeof rating.average_score === "string"
+                  ? parseFloat(rating.average_score)
+                  : rating.average_score
+                : null,
+          }));
         } else {
-          const response = await api.get<{ ratings: RatingData[] }>(`/ratings/courses/${props.courseId}`)
-          console.log('Received course ratings:', response.data)
-          return response.data.ratings.map((rating) => ({ 
-            ...rating, 
-            weighted_score: typeof rating.average_score === 'number' ? rating.average_score : null 
-          }))
+          const response = await api.get<{ ratings: RatingData[] }>(
+            `/ratings/courses/${props.courseId}`
+          );
+          console.log("Received course ratings:", response.data);
+          courseInstructorId.value = null;
+          return response.data.ratings.map((rating) => ({
+            ...rating,
+            dimension_id: rating.dimension_id,
+            dimension_name: rating.dimension_name,
+            average_score:
+              rating.average_score !== null
+                ? typeof rating.average_score === "string"
+                  ? parseFloat(rating.average_score)
+                  : rating.average_score
+                : null,
+          }));
         }
       } catch (error) {
-        console.error('Failed to calculate weighted scores:', error)
-        return []
+        console.error("Failed to calculate weighted scores:", error);
+        return [];
       }
-    }
+    };
 
     const fetchAggregatedRatings = async () => {
-      loadingAggregates.value = true
-      message.value = ''
+      loadingAggregates.value = true;
+      message.value = "";
       try {
-        console.log('Fetching aggregated ratings...')
-        const ratings = await calculateWeightedScores()
-        console.log('Received ratings:', ratings)
-        aggregatedRatings.value = ratings
+        console.log("Fetching aggregated ratings...");
+        const ratings = await calculateWeightedScores();
+        console.log("Received ratings:", ratings);
+        aggregatedRatings.value = ratings;
         if (ratings.length === 0) {
-          message.value = 'No rating dimensions available.'
-          success.value = false
+          message.value = "No rating dimensions available.";
+          success.value = false;
         }
       } catch (error) {
-        console.error('Failed to fetch ratings:', error)
-        message.value = 'Failed to load ratings. Please try again later.'
-        success.value = false
-        aggregatedRatings.value = []
+        console.error("Failed to fetch ratings:", error);
+        message.value = "Failed to load ratings. Please try again later.";
+        success.value = false;
+        aggregatedRatings.value = [];
       } finally {
-        loadingAggregates.value = false
+        loadingAggregates.value = false;
       }
-    }
+    };
 
-    watch(() => props.instructorId, () => {
-      fetchAggregatedRatings()
-      fetchUserRatings()
-    })
+    watch(
+      () => props.instructorId,
+      () => {
+        fetchAggregatedRatings();
+        fetchUserRatings();
+      }
+    );
 
     onMounted(() => {
-      fetchAggregatedRatings()
-      fetchUserRatings()
-    })
+      fetchAggregatedRatings();
+      fetchUserRatings();
+    });
 
     return {
       aggregatedRatings,
@@ -192,9 +254,9 @@ export default defineComponent({
       submitDimensionRating,
       message,
       success,
-    }
+    };
   },
-})
+});
 </script>
 
 <style scoped>
