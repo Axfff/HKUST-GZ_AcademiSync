@@ -8,14 +8,24 @@
         placeholder="Search courses..."
         class="search-input"
       />
+      <div class="subject-filter">
+        <button
+          v-for="subject in subjects"
+          :key="subject"
+          @click="selectSubject(subject)"
+          :class="['subject-button', { 'is-active': selectedSubject === subject }]"
+        >
+          {{ subject }}
+        </button>
+      </div>
     </div>
 
     <!-- Followed Courses Section -->
     <section class="courses-section">
       <h2 class="section-title">Followed Courses</h2>
       <div v-if="loadingFollowed" class="loading">Loading followed courses...</div>
-      <div v-else-if="followedCourses.length" class="grid-container">
-        <div v-for="course in followedCourses" :key="course.id" class="course-card">
+      <div v-else-if="filteredFollowedCourses.length" class="grid-container">
+        <div v-for="course in filteredFollowedCourses" :key="course.id" class="course-card">
           <router-link :to="`/courses/${course.id}`" class="course-content">
             <div class="course-header">
               <h3 class="course-title">{{ course.name }}</h3>
@@ -36,7 +46,7 @@
       <h2 class="section-title">All Courses</h2>
       <div v-if="loading" class="loading">Loading courses...</div>
       <div v-else class="grid-container">
-        <div v-for="course in courses" :key="course.id" class="course-card">
+        <div v-for="course in filteredCourses" :key="course.id" class="course-card">
           <router-link :to="`/courses/${course.id}`" class="course-content">
             <div class="course-header">
               <h3 class="course-title">{{ course.name }}</h3>
@@ -54,7 +64,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue'
+import { defineComponent, ref, computed, onMounted } from 'vue'
 import api from '../services/api'
 import FollowButton from '../components/Follows/FollowButton.vue'
 import { useAuthStore } from '../store/auth'
@@ -78,7 +88,39 @@ export default defineComponent({
     const loading = ref(false)
     const loadingFollowed = ref(false)
     const searchQuery = ref('')
+    const selectedSubject = ref('')
     const authStore = useAuthStore()
+
+    const subjects = [
+      'UCMP', 'UCUG', 'UFUG', 'UGOD', 'AIAA', 'AMAT', 'BSBE', 
+      'CMAA', 'DSAA', 'EOAS', 'FTEC', 'FUNH', 'INFH', 'INTR', 
+      'IOTA', 'IPEN', 'LANG', 'MICS', 'PDEV', 'PLED', 'ROAS', 
+      'SEEN', 'SMMG', 'SOCH', 'SYSH'
+    ]
+
+    const selectSubject = (subject: string) => {
+      selectedSubject.value = selectedSubject.value === subject ? '' : subject
+    }
+
+    const filteredCourses = computed(() => {
+      let filtered = courses.value
+      if (selectedSubject.value) {
+        filtered = filtered.filter(course => 
+          course.course_code.startsWith(selectedSubject.value + ' ')
+        )
+      }
+      return filtered
+    })
+
+    const filteredFollowedCourses = computed(() => {
+      let filtered = followedCourses.value
+      if (selectedSubject.value) {
+        filtered = filtered.filter(course => 
+          course.course_code.startsWith(selectedSubject.value + ' ')
+        )
+      }
+      return filtered
+    })
 
     const truncateDescription = (description: string) => {
       return description.length > 150 ? description.slice(0, 147) + '...' : description
@@ -142,6 +184,11 @@ export default defineComponent({
       loading,
       loadingFollowed,
       searchQuery,
+      subjects,
+      selectedSubject,
+      filteredCourses,
+      filteredFollowedCourses,
+      selectSubject,
       searchCourses,
       truncateDescription,
       fetchFollowedCourses,
@@ -182,6 +229,24 @@ export default defineComponent({
   border: 1px solid var(--color-border);
   border-radius: 4px;
   font-size: 1rem;
+}
+
+.subject-filter {
+  margin-top: 1rem;
+}
+
+.subject-button {
+  background-color: var(--color-background);
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+
+.subject-button.is-active {
+  background-color: var(--color-primary);
+  color: var(--color-background);
 }
 
 .grid-container {
