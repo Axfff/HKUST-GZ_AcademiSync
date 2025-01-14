@@ -26,7 +26,7 @@
           </button>
         </div>
         <div class="average-rating">
-          Average: {{ rating.weighted_score?.toFixed(1) || 'No ratings yet' }}
+          Average: {{ typeof rating.weighted_score === 'number' ? rating.weighted_score.toFixed(1) : 'No ratings yet' }}
         </div>
       </div>
     </div>
@@ -90,6 +90,12 @@ export default defineComponent({
     const submitDimensionRating = async (dimensionId: number) => {
       try {
         const score = pendingRatings[dimensionId]
+        console.log('Submitting rating with payload:', {
+          dimensionId,
+          score,
+          courseId: props.courseId,
+          instructorId: props.instructorId
+        })
         const payload = props.instructorId
           ? {
               course_instructor_id: props.instructorId,
@@ -106,25 +112,42 @@ export default defineComponent({
               }],
             }
 
-        await api.post('/ratings', payload)
+        console.log('Making API request with payload:', payload)
+        const response = await api.post('/ratings', payload)
+        console.log('Rating submission response:', response)
         message.value = 'Rating submitted successfully'
         success.value = true
         userRatings.value[dimensionId] = score
         delete pendingRatings[dimensionId]
-        fetchAggregatedRatings()
+        await fetchAggregatedRatings()
+        console.log('Updated aggregated ratings:', aggregatedRatings.value)
       } catch (error: any) {
+        console.error('Failed to submit rating:', error)
         message.value = error.response?.data?.message || 'Failed to submit rating'
         success.value = false
       }
     }
 
     const calculateWeightedScores = async () => {
-      if (props.instructorId) {
-        const response = await api.get<{ ratings: RatingData[] }>(`/ratings/courses/${props.courseId}/instructors/${props.instructorId}`)
-        return response.data.ratings.map((rating) => ({ ...rating, weighted_score: rating.average_score }))
-      } else {
-        const response = await api.get<{ ratings: RatingData[] }>(`/ratings/courses/${props.courseId}`)
-        return response.data.ratings.map((rating) => ({ ...rating, weighted_score: rating.average_score }))
+      try {
+        if (props.instructorId) {
+          const response = await api.get<{ ratings: RatingData[] }>(`/ratings/courses/${props.courseId}/instructors/${props.instructorId}`)
+          console.log('Received instructor ratings:', response.data)
+          return response.data.ratings.map((rating) => ({ 
+            ...rating, 
+            weighted_score: typeof rating.average_score === 'number' ? rating.average_score : null 
+          }))
+        } else {
+          const response = await api.get<{ ratings: RatingData[] }>(`/ratings/courses/${props.courseId}`)
+          console.log('Received course ratings:', response.data)
+          return response.data.ratings.map((rating) => ({ 
+            ...rating, 
+            weighted_score: typeof rating.average_score === 'number' ? rating.average_score : null 
+          }))
+        }
+      } catch (error) {
+        console.error('Failed to calculate weighted scores:', error)
+        return []
       }
     }
 
