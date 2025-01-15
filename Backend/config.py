@@ -9,10 +9,10 @@ class Config:
 
     JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY', 'dev_jwt_secret_key')
 
-    HUNTER_API_KEY = 'hunter_api_key'
+    HUNTER_API_KEY = 'c40c75e9cb7c67cfb8ca766fabe0447e02f384e4'
     HUNTER_API_URL = 'https://api.hunter.io/v2/email-verifier'
 
-    PERMITTED_EMAIL_DOMAINS = ['university.edu.cn']
+    PERMITTED_EMAIL_DOMAINS = ['connect.hkust-gz.edu.cn']
     TEST_ACCOUNTS = ['teststudent@university.edu']
 
 

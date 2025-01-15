@@ -10,6 +10,7 @@ ratings_bp = Blueprint('ratings', __name__)
 @jwt_required()
 def submit_rating():
     data = request.get_json()
+    print(data)
     user_id = get_jwt_identity()
     course_id = data.get('course_id')
     course_instructor_id = data.get('course_instructor_id')
@@ -125,6 +126,7 @@ def get_course_instructor_ratings(course_id, instructor_id):
         'course_instructor_id': course_instructor.id,
         'ratings': ratings_data
     }
+    print(response, "get course ratings")
     return jsonify(response), 200
 
 @ratings_bp.route('/my-ratings', methods=['GET'])
@@ -169,4 +171,7 @@ def get_my_ratings():
         'course_instructor_id': course_instructor_id,
         'ratings': ratings_data
     }
+
+    print(response, "my-ratings")
     return jsonify(response), 200
+
