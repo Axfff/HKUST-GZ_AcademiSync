@@ -1,0 +1,828 @@
+{
+    "AIAA": [
+        [
+            "AIAA 1010",
+            "Lei CHEN+Yingcong CHEN+Enyan DAI+Xuming HU+Junwei LIANG+Li LIU+APOSTOLOS RIKOS+Ying SUN+Hao WANG+Xin WANG+Sean Sihong XIE+Hui XIONG+Yutao YUE+Bingzhuo ZHONG"
+        ],
+        [
+            "AIAA 2205",
+            "Yingcong CHEN+Junwei LIANG+Hui XIONG"
+        ],
+        [
+            "AIAA 5023",
+            "Yingcong CHEN"
+        ],
+        [
+            "AIAA 5031",
+            "Ying SUN"
+        ],
+        [
+            "AIAA 5037",
+            "Ying SUN"
+        ],
+        [
+            "AIAA 5045",
+            "Li LIU"
+        ],
+        [
+            "AIAA 5047",
+            "Sean Sihong XIE"
+        ],
+        [
+            "AIAA 5050",
+            "Yutao YUE"
+        ],
+        [
+            "AIAA 5075",
+            "Xin WANG"
+        ],
+        [
+            "AIAA 5088",
+            "Xuming HU"
+        ],
+        [
+            "AIAA 6102",
+            "Hao WANG"
+        ]
+    ],
+    "AMAT": [
+        [
+            "AMAT 5250",
+            "Zecheng GAN"
+        ],
+        [
+            "AMAT 5430",
+            "Xiaoxiao WU"
+        ],
+        [
+            "AMAT 5540",
+            "Yang HUANG"
+        ],
+        [
+            "AMAT 5560",
+            "Rongfeng YUAN"
+        ],
+        [
+            "AMAT 5660",
+            "Haoxiang LI"
+        ],
+        [
+            "AMAT 5678",
+            "Jun WANG"
+        ],
+        [
+            "AMAT 5850",
+            "Xiakun CHU"
+        ]
+    ],
+    "BSBE": [
+        [
+            "BSBE 5100",
+            "Shaojun TANG"
+        ],
+        [
+            "BSBE 5300",
+            "Xian ZHANG"
+        ],
+        [
+            "BSBE 5400",
+            "Lingluo CHU"
+        ],
+        [
+            "BSBE 5500",
+            "Jun WU"
+        ],
+        [
+            "BSBE 6000G",
+            "Li TAO"
+        ],
+        [
+            "BSBE 6000I",
+            "Xiaomeng LI"
+        ],
+        [
+            "BSBE 6800G",
+            "Hong Hongyuan LU"
+        ]
+    ],
+    "CMAA": [
+        [
+            "CMAA 5001",
+            "Pei Man James SHE+Pan HUI+Xin TONG+Yuyang WANG"
+        ],
+        [
+            "CMAA 5008",
+            "David Kei Man YIP+Luwen YU"
+        ],
+        [
+            "CMAA 5014",
+            "Rui HU"
+        ],
+        [
+            "CMAA 5018",
+            "Mingming FAN"
+        ],
+        [
+            "CMAA 5019",
+            "Theodoros PAPATHEODOROU"
+        ],
+        [
+            "CMAA 5025",
+            "Zeyu WANG"
+        ],
+        [
+            "CMAA 5028",
+            "Junjie ZHANG"
+        ],
+        [
+            "CMAA 5030",
+            "RAUL GIANCARLO MARIA MASU"
+        ],
+        [
+            "CMAA 6018A",
+            "Kang ZHANG+Mingming FAN+Pan HUI+Zeyu WANG+RAUL GIANCARLO MARIA MASU+Wei ZENG+Luwen YU"
+        ],
+        [
+            "CMAA 6101",
+            "Luwen YU+Junjie ZHANG"
+        ]
+    ],
+    "DSAA": [
+        [
+            "DSAA 1001",
+            "Jia LI+Lei LI+Wei WANG"
+        ],
+        [
+            "DSAA 2043",
+            "Jing TANG"
+        ],
+        [
+            "DSAA 5002",
+            "Jia LI+Wei WANG"
+        ],
+        [
+            "DSAA 5003",
+            "Zeyi WEN"
+        ],
+        [
+            "DSAA 5020",
+            "Jing TANG"
+        ],
+        [
+            "DSAA 5021",
+            "Yuyu LUO"
+        ],
+        [
+            "DSAA 5024",
+            "Wei ZENG"
+        ],
+        [
+            "DSAA 5027",
+            "Lei LI"
+        ],
+        [
+            "DSAA 6000L",
+            "Fu-Gee TSUNG"
+        ],
+        [
+            "DSAA 6000M",
+            "Yanlin ZHANG"
+        ],
+        [
+            "DSAA 6000N",
+            "Xinlei HE"
+        ],
+        [
+            "DSAA 6100",
+            "Yuyu LUO"
+        ],
+        [
+            "DSAA 6101",
+            "Nan TANG"
+        ],
+        [
+            "DSAA 6920",
+            "Yuyu LUO"
+        ]
+    ],
+    "EOAS": [
+        [
+            "EOAS 5000",
+            "Qixing JI+Qing LI+Liuqian YU"
+        ],
+        [
+            "EOAS 5001",
+            "Jinshu CHI+Yi LIU+Yan ZHANG"
+        ],
+        [
+            "EOAS 5005",
+            "Henry Zhen LIU+Yaning WANG"
+        ],
+        [
+            "EOAS 5006",
+            "Lanlan CAI+Jinshu CHI+Yi LIU"
+        ]
+    ],
+    "FTEC": [
+        [
+            "FTEC 5031",
+            "Xiaoyu WANG"
+        ],
+        [
+            "FTEC 5032",
+            "Zichun WANG+Ziyu WANG+Ruiting ZUO"
+        ],
+        [
+            "FTEC 5050",
+            "Wenwei WU+Zixuan YUAN+Weijia ZHANG"
+        ],
+        [
+            "FTEC 5061",
+            "Yan DING+Ying ZHANG"
+        ],
+        [
+            "FTEC 5101",
+            "Siguang LI+Bo PANG"
+        ],
+        [
+            "FTEC 5230",
+            "Zimu ZHU"
+        ],
+        [
+            "FTEC 5310",
+            "Zifan PENG+Yingjie XUE"
+        ],
+        [
+            "FTEC 6101D",
+            "Leifu ZHANG"
+        ]
+    ],
+    "FUNH": [
+        [
+            "FUNH 5000",
+            "Qichun YANG"
+        ],
+        [
+            "FUNH 6770",
+            "Xiakun CHU+Yixin GUO+Qixing JI+Henry Zhen LIU+Huihe QIU+Lutao WENG+Jiaying WU+Jiang XU+Liuqian YU+Junyu ZHENG+Yunlong ZI"
+        ],
+        [
+            "FUNH 6800G",
+            "Yang HUANG+Qixing JI+Jiang XU+Jiaqiang HUANG"
+        ]
+    ],
+    "INFH": [
+        [
+            "INFH 5000",
+            "Huangxun CHEN+Nan TANG+Xin WANG+Luwen YU"
+        ]
+    ],
+    "INTR": [
+        [
+            "INTR 5130",
+            "Meixin ZHU"
+        ],
+        [
+            "INTR 5200",
+            "Yun BAI+Shuai JIA+Xiaotong SUN"
+        ],
+        [
+            "INTR 5220",
+            "Jia YAN+Liuqing YANG"
+        ],
+        [
+            "INTR 5250",
+            "Xinhu ZHENG"
+        ],
+        [
+            "INTR 5300",
+            "Huan YU"
+        ],
+        [
+            "INTR 5330",
+            "Dengbo HE"
+        ],
+        [
+            "INTR 6000I",
+            "Wei WEI"
+        ],
+        [
+            "INTR 6000M",
+            "Yuxuan LIANG"
+        ],
+        [
+            "INTR 6800H",
+            "Xinhu ZHENG"
+        ]
+    ],
+    "IOTA": [
+        [
+            "IOTA 5002",
+            "Zhilu LAI"
+        ],
+        [
+            "IOTA 5003",
+            "Jia YAN+Liuqing YANG"
+        ],
+        [
+            "IOTA 5005",
+            "Guobiao HU"
+        ],
+        [
+            "IOTA 5006",
+            "Dirk KUTSCHER"
+        ],
+        [
+            "IOTA 5007",
+            "Shijian GAO"
+        ],
+        [
+            "IOTA 5104",
+            "Zijun GONG+Liuqing YANG"
+        ],
+        [
+            "IOTA 5105",
+            "Hong XING"
+        ],
+        [
+            "IOTA 5109",
+            "Tengfei CHANG"
+        ],
+        [
+            "IOTA 5201",
+            "Jiadong YU"
+        ],
+        [
+            "IOTA 5202",
+            "Huangxun CHEN"
+        ],
+        [
+            "IOTA 5501",
+            "Ying CUI"
+        ],
+        [
+            "IOTA 6101",
+            "Gareth John TYSON"
+        ]
+    ],
+    "IPEN": [
+        [
+            "IPEN 5100",
+            "Yun HOU+Moyan LI+Ji Hoon SHIN"
+        ],
+        [
+            "IPEN 5110",
+            "Xun WU"
+        ],
+        [
+            "IPEN 5130",
+            "Chenyang LI"
+        ],
+        [
+            "IPEN 5140",
+            "Chenyang LI"
+        ],
+        [
+            "IPEN 5150",
+            "Corey Kewei XU"
+        ],
+        [
+            "IPEN 5250",
+            "Corey Kewei XU"
+        ],
+        [
+            "IPEN 5260",
+            "Jinyu HE"
+        ],
+        [
+            "IPEN 5290",
+            "Ji Hoon SHIN"
+        ],
+        [
+            "IPEN 5340",
+            "Jinyu HE"
+        ],
+        [
+            "IPEN 5700",
+            "Yun HOU"
+        ],
+        [
+            "IPEN 5820",
+            "Luoye CHEN"
+        ],
+        [
+            "IPEN 6101",
+            "Luoye CHEN"
+        ]
+    ],
+    "LANG": [
+        [
+            "LANG 5000",
+            "Wei ZHANG"
+        ]
+    ],
+    "MICS": [
+        [
+            "MICS 5110",
+            "Bojun CHENG"
+        ],
+        [
+            "MICS 5410",
+            "Zhirui ZONG"
+        ],
+        [
+            "MICS 5510",
+            "Hongce ZHANG"
+        ],
+        [
+            "MICS 5520",
+            "Yuzhe MA"
+        ],
+        [
+            "MICS 6000P",
+            "Zhiqiang HUANG"
+        ],
+        [
+            "MICS 6000T",
+            "Renjie WANG"
+        ],
+        [
+            "MICS 6000U",
+            "Shanshi HUANG"
+        ],
+        [
+            "MICS 6000V",
+            "Hongwu JIANG"
+        ],
+        [
+            "MICS 6000W",
+            "Jiayi HUANG"
+        ],
+        [
+            "MICS 6001C",
+            "Xinyu CHEN"
+        ],
+        [
+            "MICS 6001D",
+            "Guigang CAI"
+        ],
+        [
+            "MICS 6001E",
+            "Wei JIANG"
+        ],
+        [
+            "MICS 6001F",
+            "Xiwen LIU"
+        ],
+        [
+            "MICS 6001G",
+            "Kezhou YANG"
+        ],
+        [
+            "MICS 6001H",
+            "Yeyu TONG"
+        ],
+        [
+            "MICS 6001I",
+            "Renjing XU"
+        ]
+    ],
+    "PDEV": [
+        [
+            "PDEV 6800Y",
+            "Ran LI+Jiao GUO+YI-LUNG KUO"
+        ]
+    ],
+    "PLED": [
+        [
+            "PLED 5001",
+            "Wei ZHANG+Tun HAO+Yanhua LIU+Jaeuk PARK+Simei LIAO+Claire Qingqing XING+FELICIA YEN MYAN WONG"
+        ]
+    ],
+    "ROAS": [
+        [
+            "ROAS 5100",
+            "Shugen MA"
+        ],
+        [
+            "ROAS 5200",
+            "Immihan Ceren YASA"
+        ],
+        [
+            "ROAS 5300",
+            "Haoang LI"
+        ],
+        [
+            "ROAS 5500",
+            "Hang ZHAO"
+        ],
+        [
+            "ROAS 5600",
+            "Yiding JI"
+        ],
+        [
+            "ROAS 5800",
+            "Lei ZHU"
+        ],
+        [
+            "ROAS 5900",
+            "Dengbo HE"
+        ],
+        [
+            "ROAS 6000I",
+            "Jun MA"
+        ],
+        [
+            "ROAS 6000J",
+            "Jie SONG"
+        ],
+        [
+            "ROAS 6800G",
+            "Shugen MA"
+        ]
+    ],
+    "SEEN": [
+        [
+            "SEEN 5020",
+            "Dianxun XIAO"
+        ],
+        [
+            "SEEN 5140",
+            "Yuekuan ZHOU"
+        ],
+        [
+            "SEEN 5150",
+            "Yunlong ZI"
+        ],
+        [
+            "SEEN 5160",
+            "Wei HAN"
+        ],
+        [
+            "SEEN 5210",
+            "Jiaqiang HUANG"
+        ],
+        [
+            "SEEN 5360",
+            "Chang YAN"
+        ],
+        [
+            "SEEN 6000K",
+            "Teng ZHOU"
+        ],
+        [
+            "SEEN 6000L",
+            "Junyu ZHENG"
+        ],
+        [
+            "SEEN 6000M",
+            "Shuncheng LEE"
+        ],
+        [
+            "SEEN 6000N",
+            "Jian ZENG"
+        ],
+        [
+            "SEEN 6000O",
+            "Sheng ZHOU"
+        ],
+        [
+            "SEEN 6000P",
+            "Will Chang LIU"
+        ],
+        [
+            "SEEN 6000Q",
+            "Yutong LIANG"
+        ],
+        [
+            "SEEN 6000T",
+            "Chao FANG"
+        ]
+    ],
+    "SMMG": [
+        [
+            "SMMG 5100",
+            "Yunda WANG"
+        ],
+        [
+            "SMMG 5300",
+            "Mojun CHEN"
+        ],
+        [
+            "SMMG 5400",
+            "Yi CAI"
+        ],
+        [
+            "SMMG 6000G",
+            "Pengcheng HU"
+        ],
+        [
+            "SMMG 6000H",
+            "Kaihao ZHANG"
+        ],
+        [
+            "SMMG 6000K",
+            "Juan DU"
+        ],
+        [
+            "SMMG 6000N",
+            "Wenyu WANG"
+        ],
+        [
+            "SMMG 6000O",
+            "Liang YUE"
+        ],
+        [
+            "SMMG 6000P",
+            "Daqiang GUO"
+        ],
+        [
+            "SMMG 6800H",
+            "Mojun CHEN"
+        ]
+    ],
+    "SOCH": [
+        [
+            "SOCH 5000",
+            "Danyang XIE+Zhigang GE"
+        ],
+        [
+            "SOCH 6780",
+            "Ruiting ZUO+Ge Lin KAN+Ji Hoon SHIN"
+        ]
+    ],
+    "SYSH": [
+        [
+            "SYSH 5000",
+            "Ricky Shi-Wei LEE"
+        ],
+        [
+            "SYSH 6780",
+            "Pengcheng HU+Robert Zhong QI+Liuqing YANG"
+        ]
+    ],
+    "UCMP": [
+        [
+            "UCMP 6010",
+            "Yi CAI+Ying CUI+Zecheng GAN+Lei LI+Hao LIU+Chee Keong TAN+Corey Kewei XU+Zhuoni ZHANG+Hang ZHAO"
+        ],
+        [
+            "UCMP 6050",
+            "Man CHAN+Miaojun HUANG+Ke XUE+FELICIA YEN MYAN WONG+Landu JIANG+Li CHEN+Jenny Jinni ZHOU+Beijinni LI+Wenxun HU+Qinghao HE+Lujia WANG+Dong LU+Xiaoyan WANG+Linxiao WANG+Lanhui LI+Jingwei YANG+Xiaojie LU+Yue WANG+Tongge HUANG+Qianqian WEI+Mei LI+ARTHUR KAR LEUNG LIN"
+        ]
+    ],
+    "UCUG": [
+        [
+            "UCUG 1000",
+            "Yun HOU+YI-LUNG KUO+Ran LI+Wanru XIONG+Liuqian YU+Xuning ZHANG+Ruiting ZUO"
+        ],
+        [
+            "UCUG 1001",
+            "Bei CAO+Bo FANG+Jiao GUO+YI-LUNG KUO+Yuanbao LIN+Moxuan LUO+Dongye LYU+Marina Jinyuan MA+Keyang TANG+Mei ZHANG+Junhua ZHU+Yang YANG"
+        ],
+        [
+            "UCUG 1050",
+            "Yalan LIU+Jaeuk PARK"
+        ],
+        [
+            "UCUG 1051",
+            "Dawid Bernard JURASZEK+Zehan CHEN+Yalan LIU"
+        ],
+        [
+            "UCUG 1070",
+            "Tun HAO"
+        ],
+        [
+            "UCUG 1500",
+            "Rui HU"
+        ],
+        [
+            "UCUG 1504",
+            "Claire Qingqing XING"
+        ],
+        [
+            "UCUG 1603",
+            "David Kei Man YIP"
+        ],
+        [
+            "UCUG 1702",
+            "Peng CHEN+Xiakun CHU+Ping GAO+Jinguo LIU+Chee Keong TAN+Jiaying WU+Xiaoxiao WU+Rongfeng YUAN+Guoyi ZHU"
+        ],
+        [
+            "UCUG 1800",
+            "Jiao GUO"
+        ],
+        [
+            "UCUG 1903",
+            "Xuning ZHANG"
+        ],
+        [
+            "UCUG 2500",
+            "Bo FANG"
+        ]
+    ],
+    "UFUG": [
+        [
+            "UFUG 1102",
+            "Sophia Xiaoyi WANG+Zixuan YUAN"
+        ],
+        [
+            "UFUG 1105",
+            "Siguang LI+Zecheng GAN+Xiaoyu WANG+Bingyan HAN+Sophia Xiaoyi WANG+Ying ZHANG"
+        ],
+        [
+            "UFUG 1301",
+            "Bei CAO+Yunjuan ZHANG"
+        ],
+        [
+            "UFUG 1302",
+            "Bei CAO+Yang HUANG+Jun WANG+Yunjuan ZHANG"
+        ],
+        [
+            "UFUG 1403",
+            "JUNYU XU+Qi ZHANG"
+        ],
+        [
+            "UFUG 1502",
+            "Peng CHEN+Zehao PAN"
+        ],
+        [
+            "UFUG 1504",
+            "Jiaying WU+Haoxiang LI+Yuanbao LIN+Zehao PAN"
+        ],
+        [
+            "UFUG 1601",
+            "Hao WANG+Hao LIU+Tengfei CHANG+Tongge HUANG+Enyan DAI+Yingjie XUE+Guoming TANG"
+        ],
+        [
+            "UFUG 1801",
+            "Xu ZHANG"
+        ],
+        [
+            "UFUG 1811",
+            "Ran LI"
+        ],
+        [
+            "UFUG 2101",
+            "Xuechao WANG"
+        ],
+        [
+            "UFUG 2103",
+            "Wei WU+Shuai JIA"
+        ],
+        [
+            "UFUG 2601",
+            "Hongyuan LIU+Yangdi LYU+Weikai YANG"
+        ]
+    ],
+    "UGOD": [
+        [
+            "UGOD 5009",
+            "Zhuoni ZHANG"
+        ],
+        [
+            "UGOD 5010",
+            "Ge Lin KAN+Binzhe WANG+Wufan ZHAO+Muzhi ZHOU"
+        ],
+        [
+            "UGOD 5020",
+            "Cheuk Yi Kelvin YUEN"
+        ],
+        [
+            "UGOD 5030",
+            "Rui CAO"
+        ],
+        [
+            "UGOD 5040",
+            "Muzhi ZHOU"
+        ],
+        [
+            "UGOD 5070",
+            "Chaosu LI"
+        ],
+        [
+            "UGOD 5080",
+            "Lin YANG"
+        ],
+        [
+            "UGOD 5104",
+            "BIN JIANG"
+        ],
+        [
+            "UGOD 5112",
+            "Wufan ZHAO"
+        ],
+        [
+            "UGOD 5120",
+            "Cheuk Yi Kelvin YUEN"
+        ],
+        [
+            "UGOD 5300",
+            "Rui CAO"
+        ],
+        [
+            "UGOD 6101",
+            "Rui CAO"
+        ]
+    ]
+}
