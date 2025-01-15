@@ -13,9 +13,9 @@
             Average:
             {{
               rating.average_score !== null
-                ? (typeof rating.average_score === 'string' 
-                    ? parseFloat(rating.average_score).toFixed(1) 
-                    : rating.average_score.toFixed(1))
+                ? (typeof rating.average_score === 'string'
+                  ? parseFloat(rating.average_score).toFixed(1)
+                  : rating.average_score.toFixed(1))
                 : "No ratings yet"
             }}
           </div>
@@ -38,7 +38,7 @@
               "
             />
             <span class="rating-score"
-              >{{
+            >{{
                 pendingRatings[rating.dimension_id] ||
                 userRatings[rating.dimension_id] ||
                 0
@@ -142,23 +142,23 @@ export default defineComponent({
         });
         const payload = courseInstructorId.value
           ? {
-              course_instructor_id: courseInstructorId.value,
-              ratings: [
-                {
-                  rating_dimension_id: dimensionId,
-                  score: score,
-                },
-              ],
-            }
+            course_instructor_id: courseInstructorId.value,
+            ratings: [
+              {
+                rating_dimension_id: dimensionId,
+                score: score,
+              },
+            ],
+          }
           : {
-              course_id: props.courseId,
-              ratings: [
-                {
-                  rating_dimension_id: dimensionId,
-                  score: score,
-                },
-              ],
-            };
+            course_id: props.courseId,
+            ratings: [
+              {
+                rating_dimension_id: dimensionId,
+                score: score,
+              },
+            ],
+          };
 
         console.log("Making API request with payload:", payload);
         const response = await api.post("/ratings", payload);

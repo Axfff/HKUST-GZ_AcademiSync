@@ -149,12 +149,6 @@ export default defineComponent({
   margin: 1rem 0;
 }
 
-.course-units {
-  font-weight: 500;
-  color: var(--color-text-light-2);
-  margin: 0.5rem 0;
-}
-
 .section {
   margin-top: 2rem;
 }
@@ -165,33 +159,52 @@ export default defineComponent({
   color: var(--color-heading);
 }
 
+/* Instructors Grid */
 .instructors-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 1rem;
 }
 
+/* Default Card State */
 .instructor-card {
-  background: var(--color-background);
-  border: 1px solid var(--color-border);
+  background: #f4f4f4; /* Subtle background to differentiate from the page's background */
+  border: 1px solid #ddd;
   border-radius: 6px;
   padding: 1rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s,
+    transform 0.2s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  color: #333;
 }
 
+/* Hover State */
+.instructor-card:hover {
+  background: #eaeaea; /* Slightly darker to indicate hover */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  border-color: #ccc;
+  transform: translateY(-1px);
+}
+
+/* Active (Selected) Card */
 .instructor-card.active {
-  background: var(--color-background-mute);
-  border-color: var(--color-border-hover);
+  background: var(--color-primary, #007BFF);
+  border-color: var(--color-primary, #007BFF);
+  color: #fff;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .instructor-card h3 {
   margin-bottom: 0.5rem;
-  color: var(--color-heading);
+  color: inherit; /* Inherit the color from the parent (e.g., white if active) */
 }
 
+/* Course Header */
 .course-header {
   margin-bottom: 1.5rem;
 }
@@ -209,6 +222,7 @@ export default defineComponent({
   font-weight: 500;
 }
 
+/* Ratings and Comments Section */
 .section-header {
   display: flex;
   align-items: center;
@@ -224,6 +238,7 @@ export default defineComponent({
   gap: 0.5rem;
 }
 
+/* Clear Selection Button */
 .clear-selection {
   background: none;
   border: none;

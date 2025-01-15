@@ -4,9 +4,9 @@
     <div v-else>
       <form @submit.prevent="postComment" class="comment-form">
         <div class="form-header">Add your comment</div>
-        <textarea 
-          v-model="newComment" 
-          placeholder="Share your thoughts about this course..." 
+        <textarea
+          v-model="newComment"
+          placeholder="Share your thoughts about this course..."
           :disabled="posting"
           required
           maxlength="500"
@@ -16,8 +16,8 @@
           <span class="char-count" :class="{ 'char-count-limit': newComment.length >= 450 }">
             {{ newComment.length }}/500 characters
           </span>
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             :disabled="posting || newComment.trim().length === 0"
             class="submit-comment-btn"
           >
@@ -26,7 +26,7 @@
           </button>
         </div>
       </form>
-      
+
       <div v-if="errorMessage" class="message error">
         <span class="message-icon">⚠</span>
         {{ errorMessage }}
@@ -35,13 +35,13 @@
         <span class="message-icon">✓</span>
         {{ successMessage }}
       </div>
-      
+
       <div class="comments-container">
         <div v-if="!loading && comments.length === 0" class="empty-state">
           <div class="empty-icon">💭</div>
           <p>No comments yet. Be the first to share your thoughts!</p>
         </div>
-        
+
         <ul v-if="comments.length > 0" class="comments-list">
           <li v-for="comment in comments" :key="comment.id" class="comment-item-container">
             <CommentItem :comment="comment" />
@@ -100,7 +100,7 @@ export default defineComponent({
           endpoint = `/comments/courses/${props.courseId}`;
         }
         const response = await api.get<Comment[]>(endpoint);
-        comments.value = response.data.sort((a, b) => 
+        comments.value = response.data.sort((a, b) =>
           new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
         );
       } catch (error: any) {
@@ -112,7 +112,7 @@ export default defineComponent({
 
     const postComment = async () => {
       if (newComment.value.trim().length === 0) return;
-      
+
       posting.value = true;
       errorMessage.value = '';
       successMessage.value = '';
@@ -123,7 +123,7 @@ export default defineComponent({
           course_instructor_id: props.instructorId || null,
           content: newComment.value.trim(),
         });
-        
+
         newComment.value = '';
         successMessage.value = 'Comment posted successfully!';
         fetchComments();
@@ -138,14 +138,14 @@ export default defineComponent({
       fetchComments();
     });
 
-    return { 
-      comments, 
-      newComment, 
-      loading, 
+    return {
+      comments,
+      newComment,
+      loading,
       posting,
-      postComment, 
+      postComment,
       errorMessage,
-      successMessage 
+      successMessage
     };
   },
 });

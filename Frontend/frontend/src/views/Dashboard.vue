@@ -4,8 +4,8 @@
     <div class="sidebar">
       <h3>Subjects</h3>
       <div class="filter-group">
-        <div 
-          v-for="subject in subjects" 
+        <div
+          v-for="subject in subjects"
           :key="subject"
           class="filter-item"
           :class="{ active: selectedSubject === subject }"
@@ -55,15 +55,15 @@ export default defineComponent({
     const selectedSubject = ref('');
 
     const subjects = [
-      'UCMP', 'UCUG', 'UFUG', 'UGOD', 'AIAA', 'AMAT', 'BSBE', 
-      'CMAA', 'DSAA', 'EOAS', 'FTEC', 'FUNH', 'INFH', 'INTR', 
-      'IOTA', 'IPEN', 'LANG', 'MICS', 'PDEV', 'PLED', 'ROAS', 
+      'UCMP', 'UCUG', 'UFUG', 'UGOD', 'AIAA', 'AMAT', 'BSBE',
+      'CMAA', 'DSAA', 'EOAS', 'FTEC', 'FUNH', 'INFH', 'INTR',
+      'IOTA', 'IPEN', 'LANG', 'MICS', 'PDEV', 'PLED', 'ROAS',
       'SEEN', 'SMMG', 'SOCH', 'SYSH'
     ];
 
     const filteredCourses = computed(() => {
       if (!selectedSubject.value) return followedCourses.value;
-      return followedCourses.value.filter(course => 
+      return followedCourses.value.filter(course =>
         course.course_code.startsWith(selectedSubject.value + ' ')
       );
     });

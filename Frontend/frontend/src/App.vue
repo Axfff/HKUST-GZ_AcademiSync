@@ -4,7 +4,7 @@
       <nav class="navbar">
         <div class="nav-container">
           <div class="logo">
-            <router-link to="/">AcademiSync</router-link>
+            <router-link to="/">HKUSTGZ - AcademiSync</router-link>
           </div>
           <ul class="nav-links">
             <li v-if="!authStore.isAuthenticated">
@@ -30,7 +30,7 @@
 
     <footer class="site-footer">
       <div class="nav-container">
-        <p>&copy; 2024 AcademiSync. All rights reserved.</p>
+        <p>&copy; 2025 AcademiSync. All rights reserved.</p>
       </div>
     </footer>
   </div>

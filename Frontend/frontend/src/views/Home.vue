@@ -92,9 +92,9 @@ export default defineComponent({
     const authStore = useAuthStore()
 
     const subjects = [
-      'UCMP', 'UCUG', 'UFUG', 'UGOD', 'AIAA', 'AMAT', 'BSBE', 
-      'CMAA', 'DSAA', 'EOAS', 'FTEC', 'FUNH', 'INFH', 'INTR', 
-      'IOTA', 'IPEN', 'LANG', 'MICS', 'PDEV', 'PLED', 'ROAS', 
+      'UCMP', 'UCUG', 'UFUG', 'UGOD', 'AIAA', 'AMAT', 'BSBE',
+      'CMAA', 'DSAA', 'EOAS', 'FTEC', 'FUNH', 'INFH', 'INTR',
+      'IOTA', 'IPEN', 'LANG', 'MICS', 'PDEV', 'PLED', 'ROAS',
       'SEEN', 'SMMG', 'SOCH', 'SYSH'
     ]
 
@@ -105,7 +105,7 @@ export default defineComponent({
     const filteredCourses = computed(() => {
       let filtered = courses.value
       if (selectedSubject.value) {
-        filtered = filtered.filter(course => 
+        filtered = filtered.filter(course =>
           course.course_code.startsWith(selectedSubject.value + ' ')
         )
       }
@@ -115,7 +115,7 @@ export default defineComponent({
     const filteredFollowedCourses = computed(() => {
       let filtered = followedCourses.value
       if (selectedSubject.value) {
-        filtered = filtered.filter(course => 
+        filtered = filtered.filter(course =>
           course.course_code.startsWith(selectedSubject.value + ' ')
         )
       }
@@ -231,22 +231,41 @@ export default defineComponent({
   font-size: 1rem;
 }
 
+/* Subject Buttons */
 .subject-filter {
   margin-top: 1rem;
 }
 
 .subject-button {
-  background-color: var(--color-background);
-  border: none;
+  background-color: #f4f4f4; /* Subtle background to differentiate from plain text */
+  border: 1px solid #ddd;
+  color: #333;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  border-radius: 4px;
   padding: 0.5rem 1rem;
   font-size: 1rem;
   cursor: pointer;
   margin-right: 0.5rem;
+  margin-top: 0.5rem;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 
+/* Hover state */
+.subject-button:hover {
+  background-color: #eaeaea;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+/* Active (selected) state */
 .subject-button.is-active {
-  background-color: var(--color-primary);
-  color: var(--color-background);
+  background-color: var(--color-primary, #007BFF);
+  color: #fff;
+  border-color: var(--color-primary, #007BFF);
+  box-shadow: none;
 }
 
 .grid-container {
