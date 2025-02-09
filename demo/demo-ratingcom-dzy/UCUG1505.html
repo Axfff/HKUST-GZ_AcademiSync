@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UCUG 1505</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <script src="js/filters.js"></script>
+  </head>
+  <body>
+    <!-- 保持原有的侧边栏 -->
+    <div class="sidebar">
+      <h2>搜索课程</h2>
+      <input
+        type="text"
+        placeholder="搜索课程..."
+        class="sidebar-search-input"
+      />
+      <h2>My following courses</h2>
+      <ul>
+        <li><a href="#">收藏课程 1</a></li>
+        <li><a href="#">收藏课程 2</a></li>
+        <li><a href="#">收藏课程 3</a></li>
+        <li><a href="#">收藏课程 4</a></li>
+      </ul>
+    </div>
+
+    <div class="container">
+      <!-- 页面头部 -->
+      <header>
+        <!-- ...existing header code... -->
+      </header>
+
+      <main>
+        <!-- 课程标题部分 -->
+        <div class="course-header">
+          <h1><strong>UCUG 1505</strong></h1>
+          <h2 class="course-subtitle" style="font-weight: normal; color: #aaa">
+            Creative Coding
+          </h2>
+          <div class="course-info">
+            <span><i class="fas fa-graduation-cap"></i> 学分：3</span>
+            <span><i class="fas fa-users"></i> 评价数：15</span>
+          </div>
+
+          <!-- 添加平均评分展示区域 -->
+          <div class="average-scores">
+            <h3>课程评分</h3>
+            <div class="score-grid">
+              <div class="avg-score-item">
+                <div class="score-circle large">
+                  <span class="score-value">4.8</span>
+                </div>
+                <div class="score-label">Overall</div>
+              </div>
+              <div class="score-breakdown">
+                <div class="score-row">
+                  <span class="dimension-label">Grading</span>
+                  <div class="score-bar">
+                    <div class="score-fill" style="width: 90%"></div>
+                    <span class="score-text">4.5</span>
+                  </div>
+                </div>
+                <div class="score-row">
+                  <span class="dimension-label">Workload</span>
+                  <div class="score-bar">
+                    <div class="score-fill" style="width: 80%"></div>
+                    <span class="score-text">4.0</span>
+                  </div>
+                </div>
+                <div class="score-row">
+                  <span class="dimension-label">Teaching</span>
+                  <div class="score-bar">
+                    <div class="score-fill" style="width: 96%"></div>
+                    <span class="score-text">4.8</span>
+                  </div>
+                </div>
+                <div class="score-row">
+                  <span class="dimension-label">Outcome</span>
+                  <div class="score-bar">
+                    <div class="score-fill" style="width: 94%"></div>
+                    <span class="score-text">4.7</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p class="course-description">
+            这是一门UCUG
+            1505课程的简单介绍与描述。本课程面向创意编程初学者，通过实践项目培养编程思维和创造力。
+          </p>
+        </div>
+
+        <!-- 资料库按钮 -->
+        <div class="course-actions">
+          <a href="resources/UCUG1505.html" class="resource-btn">
+            <i class="fas fa-book"></i>课程资料库
+          </a>
+        </div>
+
+        <hr />
+
+        <!-- 评价部分 -->
+        <section class="reviews-section">
+          <h2><i class="fas fa-comments"></i> 用户评价</h2>
+
+          <!-- 筛选器 -->
+          <div class="filter-section">
+            <div class="filter-group">
+              <span class="filter-label">学期</span>
+              <select class="filter-select" id="semester-filter">
+                <option value="all">所有学期</option>
+                <option value="2023-fall">2023秋季</option>
+                <option value="2023-spring">2023春季</option>
+                <option value="2022-fall">2022秋季</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <span class="filter-label">教师</span>
+              <select class="filter-select" id="instructor-filter">
+                <option value="all">所有教师</option>
+                <option value="zhang">张教授</option>
+                <option value="wang">王教授</option>
+                <option value="li">李教授</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <span class="filter-label">排序</span>
+              <select class="filter-select" id="rating-filter">
+                <option value="high-to-low">评分从高到低</option>
+                <option value="low-to-high">评分从低到高</option>
+                <option value="newest">最新优先</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- 评价列表 -->
+          <ul class="reviews-list">
+            <li class="review-card">
+              <div class="review-header">
+                <div class="reviewer-info">
+                  <img
+                    src="images/avatar.png"
+                    alt="User Avatar"
+                    class="reviewer-avatar"
+                  />
+                  <div class="reviewer-details">
+                    <strong class="reviewer-name">用户A</strong>
+                    <div class="review-meta">
+                      <span><i class="far fa-calendar"></i> 2023秋季</span>
+                      <span><i class="fas fa-user-tie"></i> 张教授</span>
+                      <span><i class="far fa-clock"></i> 2023-12-01</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="review-scores">
+                <div class="score-item">
+                  <div class="score-circle">
+                    <span class="score-value">4.5</span>
+                  </div>
+                  <div class="score-label">Grading</div>
+                </div>
+                <div class="score-item">
+                  <div class="score-circle">
+                    <span class="score-value">4.0</span>
+                  </div>
+                  <div class="score-label">Workload</div>
+                </div>
+                <div class="score-item">
+                  <div class="score-circle">
+                    <span class="score-value">5.0</span>
+                  </div>
+                  <div class="score-label">Teaching</div>
+                </div>
+                <div class="score-item">
+                  <div class="score-circle">
+                    <span class="score-value">4.8</span>
+                  </div>
+                  <div class="score-label">Outcome</div>
+                </div>
+              </div>
+
+              <div class="review-details">
+                <div class="review-detail-item">
+                  <div class="detail-header">
+                    <i class="fas fa-chart-bar"></i>
+                    <span class="detail-label">Grading</span>
+                  </div>
+                  <div class="detail-content">
+                    评分标准清晰，给分公平合理。期末考试难度适中，作业成绩占比合适。
+                  </div>
+                </div>
+                <div class="review-detail-item">
+                  <div class="detail-header">
+                    <i class="fas fa-tasks"></i>
+                    <span class="detail-label">Workload</span>
+                  </div>
+                  <div class="detail-content">
+                    作业量适中，每周大约需要3-4小时完成作业。课程进度把握得当。
+                  </div>
+                </div>
+                <div class="review-detail-item">
+                  <div class="detail-header">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span class="detail-label">Teaching</span>
+                  </div>
+                  <div class="detail-content">
+                    老师讲解深入浅出，举例生动，课堂互动频繁，能调动学习积极性。
+                  </div>
+                </div>
+                <div class="review-detail-item">
+                  <div class="detail-header">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span class="detail-label">Outcome</span>
+                  </div>
+                  <div class="detail-content">
+                    学到了很多实用的编程技能，对创意开发有了新的认识。收获超出预期。
+                  </div>
+                </div>
+              </div>
+            </li>
+            <!-- 更多评价卡片 -->
+            <li class="review-card">
+              <div class="review-header">
+                <div class="reviewer-info">
+                  <img
+                    src="images/avatar.png"
+                    alt="User Avatar"
+                    class="reviewer-avatar"
+                  />
+                  <div class="reviewer-details">
+                    <strong class="reviewer-name">用户B</strong>
+                    <div class="review-meta">
+                      <span><i class="far fa-calendar"></i> 2023春季</span>
+                      <span><i class="fas fa-user-tie"></i> 王教授</span>
+                      <span><i class="far fa-clock"></i> 2023-06-15</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="review-scores">
+                <div class="score-item">
+                  <div class="score-circle">
+                    <span class="score-value">4.0</span>
+                  </div>
+                  <div class="score-label">Grading</div>
+                </div>
+                <div class="score-item">
+                  <div class="score-circle">
+                    <span class="score-value">3.5</span>
+                  </div>
+                  <div class="score-label">Workload</div>
+                </div>
+                <div class="score-item">
+                  <div class="score-circle">
+                    <span class="score-value">4.5</span>
+                  </div>
+                  <div class="score-label">Teaching</div>
+                </div>
+                <div class="score-item">
+                  <div class="score-circle">
+                    <span class="score-value">4.2</span>
+                  </div>
+                  <div class="score-label">Outcome</div>
+                </div>
+              </div>
+
+              <div class="review-details">
+                <div class="review-detail-item">
+                  <div class="detail-header">
+                    <i class="fas fa-chart-bar"></i>
+                    <span class="detail-label">Grading</span>
+                  </div>
+                  <div class="detail-content">
+                    评分标准明确，给分较为严格。期末考试难度较大，作业成绩占比合理。
+                  </div>
+                </div>
+                <div class="review-detail-item">
+                  <div class="detail-header">
+                    <i class="fas fa-tasks"></i>
+                    <span class="detail-label">Workload</span>
+                  </div>
+                  <div class="detail-content">
+                    作业量较大，每周大约需要5-6小时完成作业。课程进度较快。
+                  </div>
+                </div>
+                <div class="review-detail-item">
+                  <div class="detail-header">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span class="detail-label">Teaching</span>
+                  </div>
+                  <div class="detail-content">
+                    老师讲解详细，课堂互动较少，课程内容较为枯燥。
+                  </div>
+                </div>
+                <div class="review-detail-item">
+                  <div class="detail-header">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span class="detail-label">Outcome</span>
+                  </div>
+                  <div class="detail-content">
+                    学到了不少编程技能，但对创意开发的理解仍需加强。总体收获较好。
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+
+          <!-- 添加评价按钮 -->
+          <div class="add-review-section">
+            <button class="add-review-btn">
+              <i class="fas fa-plus"></i> 添加课程评价
+            </button>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- 不需要右侧栏，因为这是课程详情页 -->
+  </body>
+</html>
